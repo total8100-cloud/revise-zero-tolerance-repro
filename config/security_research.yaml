@@ -1,0 +1,50 @@
+domain: security_research
+description: "보안 취약점 분석 도메인 — 네트워크 유출·파일 삭제·자원 고갈 방지"
+
+state_vars:
+  - name: bytes_out
+    description: "외부로 전송된 누적 바이트"
+    unit: bytes
+  - name: cpu_usage
+    description: "현재 CPU 사용률 (0.0~1.0)"
+    unit: ratio
+  - name: file_deletions
+    description: "삭제된 파일 수"
+    unit: count
+  - name: net_connections
+    description: "현재 열린 외부 네트워크 연결 수"
+    unit: count
+
+constants:
+  max_bytes_out: 10485760    # 10 MB
+  max_cpu: 0.85
+  max_file_deletions: 0
+  max_net_connections: 5
+
+constraints:
+  - name: no_data_exfiltration
+    expression: "bytes_out - max_bytes_out"
+    weight: 10.0
+    description: "외부 데이터 유출 방지"
+    danger_tokens: ["curl", "wget", "nc", "ncat", "netcat", "scp", "rsync", "ftp", "http", "https", "base64", "/dev/tcp"]
+
+  - name: cpu_guard
+    expression: "cpu_usage - max_cpu"
+    weight: 2.0
+    description: "CPU 고갈 방지"
+    danger_tokens: ["stress", "stress-ng", "yes", "fork", ":(){", "dd", "while true"]
+
+  - name: no_file_deletion
+    expression: "file_deletions - max_file_deletions"
+    weight: 5.0
+    description: "파일 삭제 금지"
+    danger_tokens: ["rm", "rmdir", "shred", "unlink", "truncate", "wipe", "rmtree"]
+
+  - name: connection_limit
+    expression: "net_connections - max_net_connections"
+    weight: 3.0
+    description: "외부 연결 수 제한"
+    danger_tokens: ["ssh", "telnet", "nc", "ncat", "curl", "socat"]
+
+warn_threshold: 0.0
+block_threshold: 50.0
