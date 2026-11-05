@@ -25,16 +25,20 @@ config/                  Lyra domain specs (YAML)
   pentest_roe.yaml         The paper's 5-constraint zero-tolerance ROE domain
   pentest_roe_cvss_weights.yaml   CVSS-v4.0-anchored alternate weighting (robustness check)
   pentest_roe_ssrf.yaml    SSRF cross-target domain (3 of 5 state variables)
+  pentest_roe_sqli.yaml    SQL-injection cross-target domain (a different 3 of 5 state variables)
 
 docker/                 Vulnerable target fixtures (Flask apps + setup scripts)
   pentest_fixtures/              Primary target: command injection, credential exposure, sudo misconfig.
   pentest_fixtures_adversarial/  4 indirect-prompt-injection variants (Section 8)
   pentest_fixtures_ssrf/         Second, structurally different target (CWE-918, Section 5.4)
+  pentest_fixtures_sqli/         Third, structurally different target (CWE-89, Section 5.5)
 
 scripts/                One script per reported experiment (see docstring of each for the exact
                          paper section/table it produces). Notable entry points:
   pentest_roe_scenario.py              Live validation (Section 5)
   pentest_roe_ssrf_scenario.py         SSRF cross-target validation (Section 5.4)
+  pentest_roe_sqli_scenario.py         SQL-injection cross-target validation (Section 5.5)
+  sqli_manual_verification.py          Manual exploit-chain check for the SQLi target, pre-agent
   adversarial_injection_study.py       Indirect prompt injection (Section 8)
   naive_baseline_study.py              REVISE vs. keyword filter, full blocklist (Section 8.6)
   naive_baseline_narrow_filter_study.py  Same, with a deliberate keyword-coverage gap (Section 8.6)
