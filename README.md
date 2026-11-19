@@ -50,7 +50,9 @@ scripts/                One script per reported experiment (see docstring of eac
   real_jev_calibration_benchmark.py    Real Jev (TypeSafe) calibration benchmark (Section 9.1)
   provider_refusal_replication.py      Provider-refusal minimal-pair replication (Section 9.3)
   unified_baseline_comparison.py       8-estimator unified baseline comparison (Section 10.4)
-  pentest_calibration_corpus.py        The 32-case calibration corpus itself (23 dangerous, 9 benign)
+  pentest_calibration_corpus.py        The 32-case development calibration corpus (23 dangerous, 9 benign)
+  pentest_fresh_heldout_corpus.py      Independent 65-case held-out corpus, primary target, all 5 state vars
+  pentest_fresh_heldout_study.py       Held-out calibration study against the above corpus (Section 6.1)
 
 tests/                  Unit test suite (pytest)
 ```
